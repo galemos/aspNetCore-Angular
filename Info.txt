@@ -1,0 +1,13 @@
+Extensions:
+
+C# - Microsoft
+C# Extensions - jchannon
+Bracket Pair Colorizer or Bracket Pair Colorize2 - CoenraadS
+Material Icon Theme - Philipp Kief
+Path Intellisense - Christian Kohler
+NuGet Package Manager - jmrog
+
+Atalhos:
+ctrl + shift + p -> :linha:coluna = te leva para a posição no arquivo
+Snipet:
+ctor = construtor
