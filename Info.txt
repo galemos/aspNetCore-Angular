@@ -6,6 +6,15 @@ Bracket Pair Colorizer or Bracket Pair Colorize2 - CoenraadS
 Material Icon Theme - Philipp Kief
 Path Intellisense - Christian Kohler
 NuGet Package Manager - jmrog
+Angular Files - Alexander Ivanichev
+Angular Lenguage Service - Angular
+angular2-switcher - infinity1207
+Auto Rename Tag - Jun Han
+Debugger for Chrome - Microsoft
+Live Server - Ritwick Dey
+npm - egamma
+Prettier - Code formatter - Esben Petersen
+TSLint - egamma
 
 Atalhos:
 ctrl + shift + p -> :linha:coluna = te leva para a posição no arquivo
