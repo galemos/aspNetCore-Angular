@@ -16,6 +16,7 @@ export class EventosComponent implements OnInit {
     this._filtroLista = value;
     this.eventosFiltrados = this.filtroLista ? this.filtrarEventos(this._filtroLista) : this.eventos;
   }
+
   eventosFiltrados: any = [];
   eventos: any = [];
   imagemLargura = 50;

@@ -8,21 +8,22 @@ namespace ProAgil.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class EventoController : ControllerBase
+    public class PalestranteController : ControllerBase
     {
         public IProAgilRepository _repo { get; }
-        public EventoController(IProAgilRepository repo)
+        public PalestranteController(IProAgilRepository repo)
         {
             _repo = repo;
 
         }
-        // GET api/evento
-        [HttpGet]
-        public async Task<IActionResult> Get()
+
+        // GET api/palestrante/0
+        [HttpGet("{palestranteId}")]
+        public async Task<IActionResult> Get(int palestranteId)
         {
             try
             {
-                var results = await _repo.GetAllEventosAsync(true);
+                var results = await _repo.GetPalestranteAsyncById(palestranteId, true);
 
                 return Ok(results);                
             }
@@ -32,13 +33,14 @@ namespace ProAgil.API.Controllers
             }
         }
 
-        // GET api/evento/0
-        [HttpGet("{EventoId}")]
-        public async Task<IActionResult> Get(int EventoId)
+        // GET api/palestrante/x
+        [HttpGet("{nome}")]
+        public async Task<IActionResult> Get(string nome)
+
         {
             try
             {
-                var results = await _repo.GetEventoAsyncById(EventoId, true);
+                var results = await _repo.GetAllPalestrantesAsyncByName(nome, true);
 
                 return Ok(results);                
             }
@@ -48,33 +50,16 @@ namespace ProAgil.API.Controllers
             }
         }
 
-        // GET api/evento/x
-        [HttpGet("{Tema}")]
-        public async Task<IActionResult> Get(string Tema)
-
-        {
-            try
-            {
-                var results = await _repo.GetAllEventosAsyncByTema(Tema, true);
-
-                return Ok(results);                
-            }
-            catch (System.Exception)
-            {
-                return this.StatusCode(StatusCodes.Status500InternalServerError, "Banco de dados falho");
-            }
-        }
-
-        // POST api/evento
+        // POST api/palestrante
         [HttpPost]
-        public async Task<IActionResult> Post(Evento model)
+        public async Task<IActionResult> Post(Palestrante model)
         {
             try
             {
                 _repo.Add(model);
 
                 if(await _repo.SaveChangesAsync()){
-                    return Created($"/api/evento/{model.Id}", model);
+                    return Created($"/api/palestrante/{model.Id}", model);
                 }               
             }
             catch (System.Exception)
@@ -84,22 +69,22 @@ namespace ProAgil.API.Controllers
             return BadRequest();
         }
 
-        // PUT api/evento
+        // PUT api/palestrante
         [HttpPut]
-        public async Task<IActionResult> Put(int eventoId, Evento model)
+        public async Task<IActionResult> Put(int palestranteId, Palestrante model)
         {
             try
             {
-                var evento = await _repo.GetEventoAsyncById(eventoId, false);
+                var palestrante = await _repo.GetPalestranteAsyncById(palestranteId, false);
 
-                if(evento == null){
+                if(palestrante == null){
                     return NotFound();
                 }
 
                 _repo.Update(model);
 
                 if(await _repo.SaveChangesAsync()){
-                    return Created($"/api/evento/{model.Id}", model);
+                    return Created($"/api/palestrante/{model.Id}", model);
                 }               
             }
             catch (System.Exception)
@@ -109,19 +94,19 @@ namespace ProAgil.API.Controllers
             return BadRequest();
         }
 
-        // DELETE api/evento
+        // DELETE api/palestrante
         [HttpDelete]
-        public async Task<IActionResult> Delete(int eventoId)
+        public async Task<IActionResult> Delete(int palestranteId)
         {
             try
             {
-                var evento = await _repo.GetEventoAsyncById(eventoId, false);
+                var palestrante = await _repo.GetPalestranteAsyncById(palestranteId, false);
                 
-                if(evento == null){
+                if(palestrante == null){
                     return NotFound();
                 }
 
-                _repo.Delete(evento);
+                _repo.Delete(palestrante);
 
                 if(await _repo.SaveChangesAsync()){
                     return Ok();
