@@ -15,10 +15,12 @@ export class EventosComponent implements OnInit {
 
   eventosFiltrados: Evento[];
   eventos: Evento[];
+  evento: Evento;
   imagemLargura = 50;
   imagemMargem = 2;
   mostrarImagem = false;
   registerForm: FormGroup;
+  isUpdate = false;
 
   _filtroLista = '';
 
@@ -67,10 +69,9 @@ export class EventosComponent implements OnInit {
   }
 
   openModal(template: any) {
+    this.registerForm.reset();
     template.show();
   }
-
-  salvarAlteracao() {}
 
   validation() {
     this.registerForm = this.fb.group({
@@ -82,5 +83,43 @@ export class EventosComponent implements OnInit {
       telefone: ['', Validators.required],
       email: ['', [ Validators.required, Validators.email ]]
     });
+  }
+
+  salvarAlteracao(template: any) {
+    if (this.registerForm.valid) {
+      if (this.isUpdate) {
+        this.evento = Object.assign({id: this.evento.id}, this.registerForm.value);
+        this.eventoService.putEvento(this.evento).subscribe(
+          () => {
+            template.hide();
+            this.getEventos();
+          }, error => {
+            console.log(error);
+          }
+        );
+      } else {
+        this.evento = Object.assign({}, this.registerForm.value);
+        this.eventoService.postEvento(this.evento).subscribe(
+          (novoEvento: Evento) => {
+            template.hide();
+            this.getEventos();
+          }, error => {
+            console.log(error);
+          }
+        );
+      }
+    }
+  }
+
+  editarEvento(evento: Evento, template: any) {
+    this.isUpdate = true;
+    this.openModal(template);
+    this.evento = evento;
+    this.registerForm.patchValue(this.evento);
+  }
+
+  novoEvento(template: any) {
+    this.isUpdate = false;
+    this.openModal(template);
   }
 }
