@@ -49,7 +49,7 @@ namespace ProAgil.API.Controllers
         }
 
         // GET api/evento/x
-        [HttpGet("{Tema}")]
+        [HttpGet("getbytema/{Tema}")]
         public async Task<IActionResult> Get(string Tema)
 
         {

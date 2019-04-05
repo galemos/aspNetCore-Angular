@@ -16,7 +16,7 @@ export class EventoService {
   }
 
   getEventoByTema(tema: string): Observable<Evento[]> {
-    return this.http.get<Evento[]>(`${this.baseURL}/${tema}`);
+    return this.http.get<Evento[]>(`${this.baseURL}/getbytema/${tema}`);
   }
 
   getEventoById(id: number): Observable<Evento> {
@@ -28,10 +28,10 @@ export class EventoService {
   }
 
   putEvento(evento: Evento) {
-    return this.http.put(`${this.baseURL}/${evento.id}`, evento);
+    return this.http.put(this.baseURL, evento);
   }
 
   deleteEvento(id: number) {
-    return this.http.delete(`${this.baseURL}/${id}`);
+    return this.http.delete(this.baseURL, id);
   }
 }

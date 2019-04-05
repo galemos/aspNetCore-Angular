@@ -15,12 +15,15 @@ export class EventosComponent implements OnInit {
 
   eventosFiltrados: Evento[];
   eventos: Evento[];
+
   evento: Evento;
+  isUpdate = false;
+
   imagemLargura = 50;
   imagemMargem = 2;
   mostrarImagem = false;
   registerForm: FormGroup;
-  isUpdate = false;
+  bodyDeletarEvento = '';
 
   _filtroLista = '';
 
@@ -121,5 +124,22 @@ export class EventosComponent implements OnInit {
   novoEvento(template: any) {
     this.isUpdate = false;
     this.openModal(template);
+  }
+
+  excluirEvento(evento: Evento, template: any) {
+    this.openModal(template);
+    this.evento = evento;
+    this.bodyDeletarEvento = `Tem certeza que deseja excluir o Evento: ${evento.tema}, Código: ${evento.id}?`;
+  }
+
+  confirmeDelete(template: any) {
+    this.eventoService.deleteEvento(this.evento.id).subscribe(
+      () => {
+        template.hide();
+        this.getEventos();
+      }, error => {
+        console.log(error);
+      }
+    );
   }
 }
