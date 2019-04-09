@@ -29,7 +29,7 @@ namespace ProAgil.API.Controllers
             {
                 var eventos = await _repo.GetAllEventosAsync(true);
 
-                var results = _mapper.Map<IEnumerable<EventoDto>>(eventos);
+                var results = _mapper.Map<EventoDto[]>(eventos);
 
                 return Ok(results);
             }
@@ -66,7 +66,7 @@ namespace ProAgil.API.Controllers
             {
                 var eventos = await _repo.GetAllEventosAsyncByTema(Tema, true);
 
-                var results = _mapper.Map<IEnumerable<EventoDto>>(eventos);
+                var results = _mapper.Map<EventoDto[]>(eventos);
 
                 return Ok(results);
             }
@@ -78,27 +78,29 @@ namespace ProAgil.API.Controllers
 
         // POST api/evento
         [HttpPost]
-        public async Task<IActionResult> Post(Evento model)
+        public async Task<IActionResult> Post(EventoDto model)
         {
             try
             {
-                _repo.Add(model);
+                var evento = _mapper.Map<Evento>(model);
+
+                _repo.Add(evento);
 
                 if (await _repo.SaveChangesAsync())
                 {
-                    return Created($"/api/evento/{model.Id}", model);
+                    return Created($"/api/evento/{model.Id}", _mapper.Map<EventoDto>(evento));
                 }
             }
-            catch (System.Exception)
+            catch (System.Exception ex)
             {
-                return this.StatusCode(StatusCodes.Status500InternalServerError, "Banco de dados falho");
+                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Banco de dados falhou: {ex.Message}");
             }
             return BadRequest();
         }
 
         // PUT api/evento
         [HttpPut("{eventoId}")]
-        public async Task<IActionResult> Put(int eventoId, Evento model)
+        public async Task<IActionResult> Put(int eventoId, EventoDto model)
         {
             try
             {
@@ -109,11 +111,13 @@ namespace ProAgil.API.Controllers
                     return NotFound();
                 }
 
-                _repo.Update(model);
+                _mapper.Map(model, evento);
+
+                _repo.Update(evento);
 
                 if (await _repo.SaveChangesAsync())
                 {
-                    return Created($"/api/evento/{model.Id}", model);
+                    return Created($"/api/evento/{model.Id}", _mapper.Map<EventoDto>(evento));
                 }
             }
             catch (System.Exception)
