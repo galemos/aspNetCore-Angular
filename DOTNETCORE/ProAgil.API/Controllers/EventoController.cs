@@ -117,8 +117,8 @@ namespace ProAgil.API.Controllers
                     using(var stream =  new FileStream(fullPath, FileMode.Create)){
                         file.CopyTo(stream);
                     }
+                    return Ok();
                 }
-                return Ok();
             }
             catch (System.Exception ex)
             {

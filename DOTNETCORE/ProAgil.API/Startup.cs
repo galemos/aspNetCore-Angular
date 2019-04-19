@@ -27,10 +27,9 @@ namespace ProAgil.API {
                 x => x.UseSqlite(Configuration.GetConnectionString("DefaultConnection"))
             );
 
-            services.AddScoped<IProAgilRepository, ProAgilRepository>();
-
-            services.AddAutoMapper();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddScoped<IProAgilRepository, ProAgilRepository>();
+            services.AddAutoMapper();
             services.AddCors();
         }
 
@@ -50,6 +49,7 @@ namespace ProAgil.API {
             //app.UseHttpsRedirection();
             app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
             app.UseStaticFiles();
+            
             app.UseStaticFiles(new StaticFileOptions(){
                 FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), @"Resources")),
                 RequestPath = new PathString("/Resources")
